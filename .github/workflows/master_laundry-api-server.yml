@@ -71,22 +71,22 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FD8B8811D50647BDAB068F74E2E86B09 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1DBF40DDB4AF4F39B337BDA4B1B2CEB3 }}
 
-      - name: Configure App Service Settings
-        uses: azure/appservice-settings@v1
-        with:
-          app-name: laundry-api-server
-          mask-inputs: false
-          general-settings:
-            '{
-              "linuxFxVersion": "PYTHON|3.11"
-            }'
-          app-settings:
-            '{
-              "PYTHON_VERSION": "3.11",
-              "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
-              "ENABLE_ORYX_BUILD": "true",
-              "WEBSITE_RUN_FROM_PACKAGE": "1"
-            }'
+      # - name: Configure App Service Settings
+      #   uses: azure/appservice-settings@v1
+      #   with:
+      #     app-name: laundry-api-server
+      #     mask-inputs: false
+      #     general-settings:
+      #       '{
+      #         "linuxFxVersion": "PYTHON|3.11"
+      #       }'
+      #     app-settings:
+      #       '{
+      #         "PYTHON_VERSION": "3.11",
+      #         "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
+      #         "ENABLE_ORYX_BUILD": "true",
+      #         "WEBSITE_RUN_FROM_PACKAGE": "1"
+      #       }'
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
