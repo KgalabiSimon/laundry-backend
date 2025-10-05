@@ -76,4 +76,7 @@ jobs:
         with:
           app-name: 'laundry-api-server'
           slot-name: 'Production'
+          package: '.'
+          clean: true
+          restart: true
           
