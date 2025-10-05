@@ -76,68 +76,17 @@ jobs:
         with:
           app-name: laundry-api-server
           mask-inputs: false
-          general-settings: '{"linuxFxVersion": "PYTHON|3.11"}'
-          app-settings: '{"WEBSITE_RUN_FROM_PACKAGE": "1", "SCM_DO_BUILD_DURING_DEPLOYMENT": "true", "ENABLE_ORYX_BUILD": "true"}'
-                "name": "PYTHON_VERSION",
-                "value": "3.11"
-              },
-              {
-                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-                "value": "true"
-              },
-              {
-                "name": "ENABLE_ORYX_BUILD",
-                "value": "true"
-              }
-            ]
-
-      - name: Configure App Service Settings
-        uses: azure/appservice-settings@v1
-        with:
-          app-name: 'laundry-api-server'
-          app-settings-json: '[
+          general-settings: >-
             {
-              "name": "PYTHON_VERSION",
-              "value": "3.11"
-            },
-            {
-              "name": "ENABLE_ORYX_BUILD",
-              "value": "true"
-            },
-            {
-              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-              "value": "true"
-            },
-            {
-              "name": "WEBSITE_RUN_FROM_PACKAGE",
-              "value": "1"
+              "linuxFxVersion": "PYTHON|3.11"
             }
-          ]'
-
-      - name: Configure App Service Settings
-        uses: azure/appservice-settings@v1
-        with:
-          app-name: laundry-api-server
-          mask-inputs: false
-          settings: |
-            [
-              {
-                "name": "PYTHON_VERSION",
-                "value": "3.11"
-              },
-              {
-                "name": "ENABLE_ORYX_BUILD",
-                "value": "true"
-              },
-              {
-                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-                "value": "true"
-              },
-              {
-                "name": "WEBSITE_RUN_FROM_PACKAGE",
-                "value": "1"
-              }
-            ]
+          app-settings: >-
+            {
+              "PYTHON_VERSION": "3.11",
+              "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
+              "ENABLE_ORYX_BUILD": "true",
+              "WEBSITE_RUN_FROM_PACKAGE": "1"
+            }
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
