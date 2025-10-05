@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     # Database
-    database_url: str = "postgresql+psycopg2://laundry_user_2:2354@localhost:5432/laundry_db"
+    database_url: str = f"postgresql+psycopg2://{os.getenv('PGUSER')}:{os.getenv('PGPASSWORD')}@{os.getenv('PGHOST')}:{os.getenv('PGPORT', '5432')}/{os.getenv('PGDATABASE')}?sslmode=require"
     database_url_test: Optional[str] = None
 
     # Security
