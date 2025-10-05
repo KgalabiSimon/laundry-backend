@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.openapi.utils import get_openapi
 import time
 import logging
 from contextlib import asynccontextmanager
@@ -40,9 +42,9 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
     description="A comprehensive laundry service management API with loyalty program",
-    openapi_url="/api/v1/openapi.json",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
+    openapi_url="/openapi.json",
+    docs_url="/docs",
+    redoc_url="/redoc",
     lifespan=lifespan
 )
 
@@ -92,7 +94,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 # Include API router
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router)
 
 # Serve static files (for uploaded files)
 app.mount("/static", StaticFiles(directory=settings.upload_folder), name="static")
