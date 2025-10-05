@@ -34,7 +34,7 @@ class User(Base):
 
     # For tracking order activities
     captured_orders = relationship("Order", foreign_keys="Order.captured_by_id", back_populates="captured_by")
-    assigned_orders = relationship("Order", foreign_keys="Order.assigned_to_id",foreign_keys="[Worker.user_id]", back_populates="assigned_to")
+    assigned_orders = relationship("Order", foreign_keys="Order.assigned_to_id", back_populates="assigned_to")
 
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role}')>"
