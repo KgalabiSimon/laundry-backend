@@ -11,7 +11,12 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     # Database
-    database_url: str = f"postgresql+psycopg2://{os.getenv('PGUSER')}:{os.getenv('PGPASSWORD')}@{os.getenv('PGHOST')}:{os.getenv('PGPORT', '5432')}/{os.getenv('PGDATABASE')}?sslmode=require"
+    database_url: str = os.getenv("DATABASE_URL")
+    
+    # If individual PostgreSQL environment variables are set, construct the URL
+    if not database_url and all([os.getenv('PGUSER'), os.getenv('PGPASSWORD'), os.getenv('PGHOST')]):
+        database_url = f"postgresql+psycopg2://{os.getenv('PGUSER')}:{os.getenv('PGPASSWORD')}@{os.getenv('PGHOST')}:{os.getenv('PGPORT', '5432')}/{os.getenv('PGDATABASE', 'postgres')}"
+    
     database_url_test: Optional[str] = None
 
     # Security
