@@ -70,6 +70,52 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FD8B8811D50647BDAB068F74E2E86B09 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1DBF40DDB4AF4F39B337BDA4B1B2CEB3 }}
 
+      - name: Setup Azure App Service settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'laundry-api-server'
+          app-settings-json: '[
+            {
+              "name": "PYTHON_VERSION",
+              "value": "3.11"
+            },
+            {
+              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+              "value": "true"
+            },
+            {
+              "name": "ENABLE_ORYX_BUILD",
+              "value": "true"
+            }
+          ]'
+          
+      - name: Setup Azure App Service settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: laundry-api-server
+          mask-inputs: false
+          app-settings: |
+            [
+              {
+                "name": "PYTHON_VERSION",
+                "value": "3.11"
+              },
+              {
+                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+                "value": "true"
+              },
+              {
+                "name": "ENABLE_ORYX_BUILD",
+                "value": "true"
+              }
+            ]
+
+      - name: Configure Python version
+        run: |
+          echo "PYTHON_VERSION=3.11" >> $GITHUB_ENV
+          echo "ENABLE_ORYX_BUILD=true" >> $GITHUB_ENV
+          echo "SCM_DO_BUILD_DURING_DEPLOYMENT=true" >> $GITHUB_ENV
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
@@ -79,4 +125,5 @@ jobs:
           package: '.'
           clean: true
           restart: true
+          startup-command: 'python3.11 -m gunicorn app.main:app --host 0.0.0.0'
           
