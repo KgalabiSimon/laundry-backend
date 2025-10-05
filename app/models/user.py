@@ -30,7 +30,7 @@ class User(Base):
 
     # Relationships
     customer_profile = relationship("Customer", back_populates="user", uselist=False)
-    worker_profile = relationship("Worker", back_populates="user", uselist=False)
+    worker_profile = relationship("Worker", back_populates="user", uselist=False, foreign_keys="[Worker.user_id]")
 
     # For tracking order activities
     captured_orders = relationship("Order", foreign_keys="Order.captured_by_id", back_populates="captured_by")
