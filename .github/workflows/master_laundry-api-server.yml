@@ -50,19 +50,23 @@ jobs:
           path: |
             .
             !venv/
-
+            
   deploy:
     runs-on: ubuntu-latest
     needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
+          path: .
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -70,23 +74,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_720F8F266495476A98F659F7249D1999 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FD8B8811D50647BDAB068F74E2E86B09 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1DBF40DDB4AF4F39B337BDA4B1B2CEB3 }}
-
-      # - name: Configure App Service Settings
-      #   uses: azure/appservice-settings@v1
-      #   with:
-      #     app-name: laundry-api-server
-      #     mask-inputs: false
-      #     general-settings:
-      #       '{
-      #         "linuxFxVersion": "PYTHON|3.11"
-      #       }'
-      #     app-settings:
-      #       '{
-      #         "PYTHON_VERSION": "3.11",
-      #         "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
-      #         "ENABLE_ORYX_BUILD": "true",
-      #         "WEBSITE_RUN_FROM_PACKAGE": "1"
-      #       }'
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -97,5 +84,5 @@ jobs:
           package: '.'
           clean: true
           restart: true
-          startup-command: 'python3.11 -m gunicorn app.main:app --host 0.0.0.0'
+          startup-command: 'uvicorn app.main:app --host 0.0.0.0 --port 8000'
           
