@@ -1,0 +1,74 @@
+{
+  "name": "LaundryPro API",
+  "description": "FastAPI backend for LaundryPro laundry service management with WhatsApp notifications",
+  "keywords": ["fastapi", "python", "whatsapp", "notifications", "laundry"],
+  "website": "https://github.com/your-username/your-repo",
+  "repository": "https://github.com/your-username/your-repo",
+  "logo": "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/fastapi.svg",
+  "success_url": "/api/docs",
+  "stack": "heroku-22",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:mini"
+    },
+    {
+      "plan": "heroku-redis:mini"
+    }
+  ],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Secret key for JWT token generation",
+      "generator": "secret"
+    },
+    "ENVIRONMENT": {
+      "description": "Application environment",
+      "value": "production"
+    },
+    "DEBUG": {
+      "description": "Debug mode",
+      "value": "False"
+    },
+    "ALLOWED_ORIGINS": {
+      "description": "CORS allowed origins",
+      "value": "https://same-aej9qkmhge0-latest.netlify.app"
+    },
+    "WHATSAPP_ENABLED": {
+      "description": "Enable WhatsApp notifications",
+      "value": "True"
+    },
+    "WHATSAPP_API_URL": {
+      "description": "WhatsApp Business API URL",
+      "value": "https://graph.facebook.com/v18.0"
+    },
+    "WHATSAPP_ACCESS_TOKEN": {
+      "description": "WhatsApp Business API Access Token",
+      "required": false
+    },
+    "WHATSAPP_PHONE_NUMBER_ID": {
+      "description": "WhatsApp Phone Number ID",
+      "required": false
+    },
+    "WHATSAPP_WEBHOOK_VERIFY_TOKEN": {
+      "description": "WhatsApp Webhook Verify Token",
+      "required": false
+    }
+  },
+  "scripts": {
+    "postdeploy": "python -c \"from app.utils.init_data import initialize_default_data; initialize_default_data()\""
+  }
+}
