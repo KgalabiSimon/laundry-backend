@@ -32,7 +32,7 @@ jobs:
       - name: Create and start virtual environment
         run: |
           python -m venv venv
-          source venv/bin/activate
+        
 
       - name: Install Python dependencies
         run: |
@@ -76,17 +76,17 @@ jobs:
         with:
           app-name: laundry-api-server
           mask-inputs: false
-          general-settings: >-
-            {
+          general-settings:
+            '{
               "linuxFxVersion": "PYTHON|3.11"
-            }
-          app-settings: >-
-            {
+            }'
+          app-settings:
+            '{
               "PYTHON_VERSION": "3.11",
               "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
               "ENABLE_ORYX_BUILD": "true",
               "WEBSITE_RUN_FROM_PACKAGE": "1"
-            }
+            }'
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
