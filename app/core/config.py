@@ -3,6 +3,22 @@ from typing import List, Optional
 import urllib.parse
 import os
 
+import urllib.parse
+
+def get_azure_connection_uri():
+    """Get Azure PostgreSQL connection URI from environment variables"""
+    try:
+        dbhost = os.environ.get('DBHOST', 'laundry-postpresql-db.postgres.database.azure.com')
+        dbname = os.environ.get('DBNAME', 'postgres')
+        dbuser = urllib.parse.quote(os.environ.get('DBUSER', 'azureuser'))
+        dbpassword = os.environ.get('DBPASSWORD', '')
+        sslmode = os.environ.get('SSLMODE', 'require')
+        
+        return f"postgresql://{dbuser}:{dbpassword}@{dbhost}:5432/{dbname}?sslmode={sslmode}"
+    except Exception as e:
+        print(f"Error constructing Azure connection URI: {e}")
+        return None
+
 class Settings(BaseSettings):
     # ------------------
     # Application
@@ -11,6 +27,20 @@ class Settings(BaseSettings):
     app_version: str = "1.0.0"
     debug: bool = True
     environment: str = "development"  # dev / test / prod
+    
+    # Database Configuration
+    database_url: str = None  # Will be set in get_database_url method
+    
+    def get_database_url(self) -> str:
+        """Get database URL based on environment"""
+        if self.environment == "production":
+            # Use Azure PostgreSQL in production
+            azure_url = get_azure_connection_uri()
+            if azure_url:
+                return azure_url
+                
+        # Fallback to local development database
+        return "postgresql://laundry_user_2:2354@localhost:5432/laundry_db"
 
     # ------------------
     # Security
