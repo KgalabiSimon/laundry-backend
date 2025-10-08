@@ -26,14 +26,14 @@ class Settings(BaseSettings):
     app_name: str = "LaundryPro API"
     app_version: str = "1.0.0"
     debug: bool = True
-    environment: str = "development"  # dev / test / prod
+    ENVIRONMENT: str = "development"  # dev / test / prod
     
     # Database Configuration
     database_url: str = None  # Will be set in get_database_url method
     
     def get_database_url(self) -> str:
         """Get database URL based on environment"""
-        if self.environment == "production":
+        if self.ENVIRONMENT == "production":
             # Use Azure PostgreSQL in production
             azure_url = get_azure_connection_uri()
             if azure_url:

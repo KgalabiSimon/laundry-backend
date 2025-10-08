@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+logs/*.log
+!logs/.gitkeep
+uploads/*
+!uploads/.gitkeep
+.venv/
+venv/
+.idea/
+.vscode/
